@@ -1,0 +1,23 @@
+{
+  "name": "der-ruf-der-seele",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel app.js --hmr-port 50619"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1993-design-associates/der-ruf-der-seele.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1993-design-associates/der-ruf-der-seele/issues"
+  },
+  "homepage": "https://github.com/1993-design-associates/der-ruf-der-seele#readme",
+  "dependencies": {
+    "parcel": "^2.13.3"
+  }
+}
