@@ -10,13 +10,13 @@ function preloaderAnime() {
   anime({
     targets: '.preloader-circle',
     scale: [
-      { value: 0, duration: 0 }, // Initial state
-      { value: 1, duration: 1500, easing: 'easeOutSine' } // Scale to 1
+      { value: 0.5, duration: 0 }, // Initial state
+      { value: 1, duration: 1550, easing: 'easeOutQuart' }
     ],
     opacity: [
       { value: 0, duration: 0 }, // Initial state
-      { value: 0.5, duration: 750, easing: 'easeOutExpo' }, // Fade in
-      { value: 0, duration: 750, easing: 'easeInExpo' } // Fade out (ends with scale)
+      { value: 0.5, duration: 1000, easing: 'easeOutExpo' }, // Fade in
+      { value: 0, duration: 500, easing: 'easeInOutSine' } // Fade out (ends with scale)
     ],
     delay: anime.stagger(-200, { start: 300 * (document.querySelectorAll('.preloader-circle').length - 1) }),
     complete: function() {

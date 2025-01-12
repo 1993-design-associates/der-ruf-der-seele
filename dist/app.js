@@ -733,14 +733,14 @@ function preloaderAnime() {
         targets: '.preloader-circle',
         scale: [
             {
-                value: 0,
+                value: 0.5,
                 duration: 0
             },
             {
                 value: 1,
-                duration: 1500,
-                easing: 'easeOutExpo'
-            } // Scale to 1
+                duration: 1550,
+                easing: 'easeOutQuart'
+            }
         ],
         opacity: [
             {
@@ -749,13 +749,13 @@ function preloaderAnime() {
             },
             {
                 value: 0.5,
-                duration: 750,
+                duration: 1000,
                 easing: 'easeOutExpo'
             },
             {
                 value: 0,
-                duration: 750,
-                easing: 'easeInExpo'
+                duration: 500,
+                easing: 'easeInOutSine'
             } // Fade out (ends with scale)
         ],
         delay: (0, _animejsDefault.default).stagger(-200, {
