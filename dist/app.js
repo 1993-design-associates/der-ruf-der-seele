@@ -722,7 +722,43 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _animejs = require("animejs");
 var _animejsDefault = parcelHelpers.interopDefault(_animejs);
-function preloaderAnime() {
+const homeHeroTextIn = ()=>{
+    // Split text into letters
+    const textElement = document.querySelector('.h1');
+    const text = textElement.textContent;
+    textElement.innerHTML = text.split('').map((letter)=>`<span>${letter}</span>`).join('');
+    // Animate each letter
+    (0, _animejsDefault.default)({
+        targets: '.h1 span',
+        opacity: [
+            {
+                value: 0,
+                duration: 0
+            },
+            {
+                value: 1,
+                duration: 900,
+                easing: 'easeOutSine'
+            }
+        ],
+        filter: [
+            {
+                value: 'blur(10px)',
+                duration: 0
+            },
+            {
+                value: 'blur(0px)',
+                duration: 800,
+                easing: 'easeOutQuart'
+            }
+        ],
+        delay: (0, _animejsDefault.default).stagger(100, {
+            start: 900,
+            from: 'center'
+        })
+    });
+};
+const preloaderAnime = ()=>{
     // Set the initial state of the circles
     document.querySelectorAll('.preloader-circle').forEach((circle)=>{
         circle.style.transform = 'scale(0)';
@@ -757,14 +793,16 @@ function preloaderAnime() {
                 easing: 'easeInOutSine'
             } // Fade out (ends with scale)
         ],
-        delay: (0, _animejsDefault.default).stagger(-200, {
+        delay: (0, _animejsDefault.default).stagger(-250, {
             start: 300 * (document.querySelectorAll('.preloader-circle').length - 1)
         }),
         complete: function() {
+            // Trigger the loader and start the hero text animation
             document.querySelector('#loader-trigger').click();
+            homeHeroTextIn();
         }
     });
-}
+};
 exports.default = preloaderAnime;
 
 },{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jokr5":[function(require,module,exports,__globalThis) {
