@@ -11,7 +11,7 @@ function preloaderAnime() {
     targets: '.preloader-circle',
     scale: [
       { value: 0, duration: 0 }, // Initial state
-      { value: 1, duration: 1500, easing: 'easeOutExpo' } // Scale to 1
+      { value: 1, duration: 1500, easing: 'easeOutSine' } // Scale to 1
     ],
     opacity: [
       { value: 0, duration: 0 }, // Initial state
