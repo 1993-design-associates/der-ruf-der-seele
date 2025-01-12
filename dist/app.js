@@ -605,12 +605,11 @@ var _preloaderJs = require("/js/preloader.js");
 var _preloaderJsDefault = parcelHelpers.interopDefault(_preloaderJs);
 const parceled = true;
 const onReady = ()=>{
+    (0, _preloaderJsDefault.default)();
     (0, _contactTabClickJsDefault.default)();
     (0, _formTabJsDefault.default)();
 };
-const onLoading = ()=>{
-    (0, _preloaderJsDefault.default)();
-};
+const onLoading = ()=>{};
 if (document.readyState !== 'loading') console.log('readystate');
 else {
     console.log('load');

@@ -4,12 +4,12 @@ import preloaderAnime from "/js/preloader.js"
 
 const parceled = true
 const onReady = () => {
+    preloaderAnime();
     contactTabClick();
     formTab();
     
 }
 const onLoading = () => {
-    preloaderAnime();
 
 }
 
