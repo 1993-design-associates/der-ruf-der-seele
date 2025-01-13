@@ -19,6 +19,7 @@
   "homepage": "https://github.com/1993-design-associates/der-ruf-der-seele#readme",
   "dependencies": {
     "animejs": "^3.2.2",
+    "lenis": "^1.1.19",
     "parcel": "^2.13.3"
   }
 }

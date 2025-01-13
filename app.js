@@ -1,13 +1,14 @@
 import contactTabClick from "/js/contactTabClick.js";
 import formTab from "/js/formTab.js";
 import preloaderAnime from "/js/preloader.js"
+import smoothScroll from '/js/smoothScroll.js';
 
 const parceled = true
 const onReady = () => {
     preloaderAnime();
     contactTabClick();
     formTab();
-    
+    smoothScroll();
 }
 const onLoading = () => {
 
