@@ -607,6 +607,8 @@ var _smoothScrollJs = require("/js/smoothScroll.js");
 var _smoothScrollJsDefault = parcelHelpers.interopDefault(_smoothScrollJs);
 var _btnHoverJs = require("/js/btnHover.js");
 var _btnHoverJsDefault = parcelHelpers.interopDefault(_btnHoverJs);
+var _headingFadeInJs = require("/js/headingFadeIn.js");
+var _headingFadeInJsDefault = parcelHelpers.interopDefault(_headingFadeInJs);
 const parceled = true;
 const onReady = ()=>{
     (0, _preloaderJsDefault.default)();
@@ -614,16 +616,20 @@ const onReady = ()=>{
     (0, _formTabJsDefault.default)();
     (0, _smoothScrollJsDefault.default)();
     (0, _btnHoverJsDefault.default)();
+    (0, _headingFadeInJsDefault.default)();
 };
 const onLoading = ()=>{};
-if (document.readyState !== 'loading') console.log('readystate');
-else {
+if (document.readyState !== 'loading') {
+    onLoading();
+    onReady();
+    console.log('readystate');
+} else {
     console.log('load');
     window.addEventListener('load', onReady);
     document.addEventListener('DOMContentLoaded', onLoading);
 }
 
-},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen"}],"a7zDw":[function(require,module,exports,__globalThis) {
+},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/headingFadeIn.js":"k3tbE"}],"a7zDw":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const contactTabClick = ()=>{
@@ -2900,44 +2906,54 @@ parcelHelpers.defineInteropFlag(exports);
 var _animejs = require("animejs");
 var _animejsDefault = parcelHelpers.interopDefault(_animejs);
 const btnHover = ()=>{
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach((button)=>{
-        const btnRel = button.querySelector('.btn-text-top');
-        const btnAbs = button.querySelector('.btn-text-back');
+    document.querySelectorAll('.btn').forEach((button)=>{
+        const [btnRel, btnAbs] = button.querySelectorAll('.btn-text-top, .btn-text-back');
         if (btnRel && btnAbs) {
-            // Preprocess: Split text into spans
-            const splitText = (text)=>text.split('').map((letter)=>`<span class="letter">${letter}</span>`).join('');
-            btnRel.innerHTML = splitText(btnRel.textContent);
-            btnAbs.innerHTML = splitText(btnAbs.textContent);
-            const relLetterSpans = btnRel.querySelectorAll('.letter');
-            const absLetterSpans = btnAbs.querySelectorAll('.letter');
-            // Define hover animations
-            const animateLetters = (targets, from, to, delayDir = 'normal')=>(0, _animejsDefault.default)({
+            // Split text into spans, preserving spaces
+            const splitText = (text)=>text.replace(/./g, (char)=>`<span class="letter">${char === ' ' ? '&nbsp;' : char}</span>`);
+            [
+                btnRel,
+                btnAbs
+            ].forEach((el)=>el.innerHTML = splitText(el.textContent));
+            const animateLetters = (targets, from, to)=>(0, _animejsDefault.default)({
                     targets,
                     translateY: [
                         from,
                         to
                     ],
-                    delay: (0, _animejsDefault.default).stagger(50, {
-                        direction: delayDir
-                    }),
+                    delay: (0, _animejsDefault.default).stagger(50),
                     duration: 400,
                     easing: 'easeInOutQuad'
                 });
-            // On hover (mouseenter), animate the text
             button.addEventListener('mouseenter', ()=>{
-                animateLetters(relLetterSpans, '0%', '-100%');
-                animateLetters(absLetterSpans, '0%', '-100%');
+                animateLetters(btnRel.querySelectorAll('.letter'), '0%', '-100%');
+                animateLetters(btnAbs.querySelectorAll('.letter'), '0%', '-100%');
             });
-            // On hover off (mouseleave), reset positions instantly
             button.addEventListener('mouseleave', ()=>{
-                relLetterSpans.forEach((span)=>span.style.transform = 'translateY(0%)');
-                absLetterSpans.forEach((span)=>span.style.transform = 'translateY(100%)');
+                [
+                    ...btnRel.querySelectorAll('.letter'),
+                    ...btnAbs.querySelectorAll('.letter')
+                ].forEach((span)=>span.style.transform = span.closest('.btn-text-top') ? 'translateY(0%)' : 'translateY(100%)');
             });
         }
     });
 };
 exports.default = btnHover;
+
+},{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k3tbE":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _animejs = require("animejs");
+var _animejsDefault = parcelHelpers.interopDefault(_animejs);
+const headingFadeIn = ()=>{
+    const target = document.querySelector('.h2-display');
+    const text = target.textContent;
+    const letters = text.split('').map((letter)=>{
+        return `<span class="letter" style="display: inline-block; opacity: 0; filter: blur(10px);">${letter}</span>`;
+    }).join('');
+    target.innerHTML = letters;
+};
+exports.default = headingFadeIn;
 
 },{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["jQqog","igcvL"], "igcvL", "parcelRequire94c2")
 
