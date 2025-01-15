@@ -609,6 +609,10 @@ var _btnHoverJs = require("/js/btnHover.js");
 var _btnHoverJsDefault = parcelHelpers.interopDefault(_btnHoverJs);
 var _titleFadeInJs = require("/js/titleFadeIn.js");
 var _titleFadeInJsDefault = parcelHelpers.interopDefault(_titleFadeInJs);
+var _articleClickJs = require("/js/articleClick.js");
+var _articleClickJsDefault = parcelHelpers.interopDefault(_articleClickJs);
+var _gradientHeightJs = require("/js/gradientHeight.js");
+var _gradientHeightJsDefault = parcelHelpers.interopDefault(_gradientHeightJs);
 const parceled = true;
 const onReady = ()=>{
     (0, _preloaderJsDefault.default)();
@@ -617,8 +621,11 @@ const onReady = ()=>{
     (0, _smoothScrollJsDefault.default)();
     (0, _btnHoverJsDefault.default)();
     (0, _titleFadeInJsDefault.default)();
+    (0, _articleClickJsDefault.default)();
 };
-const onLoading = ()=>{};
+const onLoading = ()=>{
+    (0, _gradientHeightJsDefault.default)();
+};
 if (document.readyState !== 'loading') console.log('readystate');
 else {
     console.log('load');
@@ -626,7 +633,7 @@ else {
     document.addEventListener('DOMContentLoaded', onLoading);
 }
 
-},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/titleFadeIn.js":"boZN7"}],"a7zDw":[function(require,module,exports,__globalThis) {
+},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/titleFadeIn.js":"boZN7","/js/articleClick.js":"bs676","/js/gradientHeight.js":"fQtgt"}],"a7zDw":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const contactTabClick = ()=>{
@@ -682,47 +689,50 @@ exports.export = function(dest, destName, get) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const formTab = ()=>{
-    const tabMenus = document.querySelectorAll(".form-tab");
-    const tabContents = document.querySelectorAll(".tab-form");
-    const activateTab = (index)=>{
-        // Update active menu
-        tabMenus.forEach((menu, i)=>{
-            menu.classList.toggle("active", i === index);
-        });
-        // Update tab content with fade effect
-        tabContents.forEach((content, i)=>{
-            if (i === index) {
-                content.style.display = "block";
-                setTimeout(()=>content.style.opacity = 1, 10);
-            } else {
-                content.style.opacity = 0;
-                setTimeout(()=>content.style.display = "none", 500); // Match CSS transition duration
-            }
-        });
-    };
-    const initializeTabs = ()=>{
+    const tabWraps = document.querySelectorAll(".form-tab-wrap");
+    const initializeTabs = (wrap)=>{
+        const tabMenus = wrap.querySelectorAll(".form-tab");
+        const tabContents = wrap.querySelectorAll(".tab-form");
+        const activateTab = (index)=>{
+            // Update active menu
+            tabMenus.forEach((menu, i)=>{
+                menu.classList.toggle("active", i === index);
+            });
+            // Update tab content with fade effect
+            tabContents.forEach((content, i)=>{
+                if (i === index) {
+                    content.style.display = "block";
+                    setTimeout(()=>content.style.opacity = 1, 10);
+                } else {
+                    content.style.opacity = 0;
+                    setTimeout(()=>content.style.display = "none", 500); // Match CSS transition duration
+                }
+            });
+        };
         // Attach click events to tab menu items
         tabMenus.forEach((menu, index)=>{
             menu.addEventListener("click", ()=>activateTab(index));
         });
         // Initialize first tab
         activateTab(0);
+        // Check if viewport matches desktop
+        const mediaQuery = window.matchMedia("(min-width: 992px)");
+        if (mediaQuery.matches) activateTab(0);
+        // Reinitialize tabs on viewport resize
+        mediaQuery.addEventListener("change", (e)=>{
+            if (e.matches) activateTab(0);
+            else {
+                // Reset styles when switching out of desktop
+                tabMenus.forEach((menu)=>menu.classList.remove("active"));
+                tabContents.forEach((content)=>{
+                    content.style.opacity = 0;
+                    content.style.display = "none";
+                });
+            }
+        });
     };
-    // Check if viewport matches desktop
-    const mediaQuery = window.matchMedia("(min-width: 992px)");
-    if (mediaQuery.matches) initializeTabs();
-    // Reinitialize tabs on viewport resize
-    mediaQuery.addEventListener("change", (e)=>{
-        if (e.matches) initializeTabs();
-        else {
-            // Reset styles when switching out of desktop
-            tabMenus.forEach((menu)=>menu.classList.remove("active"));
-            tabContents.forEach((content)=>{
-                content.style.opacity = 0;
-                content.style.display = "none";
-            });
-        }
-    });
+    // Initialize tabs for each wrap
+    tabWraps.forEach((wrap)=>initializeTabs(wrap));
 };
 exports.default = formTab;
 
@@ -2990,6 +3000,46 @@ const titleFadeIn = ()=>{
 };
 exports.default = titleFadeIn;
 
-},{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["jQqog","igcvL"], "igcvL", "parcelRequire94c2")
+},{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bs676":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const articleClick = ()=>{
+    // Check if the current breakpoint is desktop
+    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+    if (isDesktop) {
+        // Select all tabs
+        const tabs = document.querySelectorAll(".article-wrap");
+        // Add event listeners to all tabs
+        tabs.forEach((tab, index)=>{
+            tab.addEventListener("click", ()=>{
+                // Remove "active" class from all tabs
+                tabs.forEach((otherTab)=>{
+                    otherTab.classList.remove("active");
+                });
+                // Add "active" class to the clicked tab
+                tab.classList.add("active");
+            });
+            // Simulate a click on the first tab when the page loads
+            if (index === 0) tab.click();
+        });
+    }
+};
+exports.default = articleClick;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fQtgt":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const gradientHeight = ()=>{
+    const element = document.querySelector('.bg-wrap'); // Use a class selector
+    if (element) element.style.height = `${document.documentElement.scrollHeight}px`;
+    else console.warn('Element with class "bg-wrap" not found.');
+};
+// Call the function initially to set the height
+gradientHeight();
+// Update the height on window resize
+window.addEventListener('resize', gradientHeight);
+exports.default = gradientHeight;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["jQqog","igcvL"], "igcvL", "parcelRequire94c2")
 
 //# sourceMappingURL=app.js.map

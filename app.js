@@ -4,6 +4,8 @@ import preloaderAnime from "/js/preloader.js"
 import smoothScroll from '/js/smoothScroll.js';
 import btnHover from '/js/btnHover.js';
 import titleFadeIn from '/js/titleFadeIn.js';
+import articleClick from '/js/articleClick.js';
+import gradientHeight from '/js/gradientHeight.js';
 
 
 
@@ -15,8 +17,10 @@ const onReady = () => {
     smoothScroll();
     btnHover();
     titleFadeIn();
+    articleClick();
 }
 const onLoading = () => {
+    gradientHeight();
 
 }
 
