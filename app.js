@@ -3,7 +3,7 @@ import formTab from "/js/formTab.js";
 import preloaderAnime from "/js/preloader.js"
 import smoothScroll from '/js/smoothScroll.js';
 import btnHover from '/js/btnHover.js';
-import headingFadeIn from '/js/headingFadeIn.js';
+import titleFadeIn from '/js/titleFadeIn.js';
 
 
 
@@ -14,15 +14,14 @@ const onReady = () => {
     formTab();
     smoothScroll();
     btnHover();
-    headingFadeIn();
+    titleFadeIn();
 }
 const onLoading = () => {
 
 }
 
 if (document.readyState !== 'loading') {
-    onLoading();
-    onReady();
+    
     console.log('readystate')
 } else {
     console.log('load')

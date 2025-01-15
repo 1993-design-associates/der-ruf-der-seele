@@ -607,8 +607,8 @@ var _smoothScrollJs = require("/js/smoothScroll.js");
 var _smoothScrollJsDefault = parcelHelpers.interopDefault(_smoothScrollJs);
 var _btnHoverJs = require("/js/btnHover.js");
 var _btnHoverJsDefault = parcelHelpers.interopDefault(_btnHoverJs);
-var _headingFadeInJs = require("/js/headingFadeIn.js");
-var _headingFadeInJsDefault = parcelHelpers.interopDefault(_headingFadeInJs);
+var _titleFadeInJs = require("/js/titleFadeIn.js");
+var _titleFadeInJsDefault = parcelHelpers.interopDefault(_titleFadeInJs);
 const parceled = true;
 const onReady = ()=>{
     (0, _preloaderJsDefault.default)();
@@ -616,20 +616,17 @@ const onReady = ()=>{
     (0, _formTabJsDefault.default)();
     (0, _smoothScrollJsDefault.default)();
     (0, _btnHoverJsDefault.default)();
-    (0, _headingFadeInJsDefault.default)();
+    (0, _titleFadeInJsDefault.default)();
 };
 const onLoading = ()=>{};
-if (document.readyState !== 'loading') {
-    onLoading();
-    onReady();
-    console.log('readystate');
-} else {
+if (document.readyState !== 'loading') console.log('readystate');
+else {
     console.log('load');
     window.addEventListener('load', onReady);
     document.addEventListener('DOMContentLoaded', onLoading);
 }
 
-},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/headingFadeIn.js":"k3tbE"}],"a7zDw":[function(require,module,exports,__globalThis) {
+},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/titleFadeIn.js":"boZN7"}],"a7zDw":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const contactTabClick = ()=>{
@@ -2940,35 +2937,58 @@ const btnHover = ()=>{
 };
 exports.default = btnHover;
 
-},{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k3tbE":[function(require,module,exports,__globalThis) {
+},{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"boZN7":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _animejs = require("animejs");
 var _animejsDefault = parcelHelpers.interopDefault(_animejs);
-const headingFadeIn = ()=>{
-    console.log("Initializing headingFadeIn...");
-    $("#test").waypoint(function() {
-        (0, _animejsDefault.default).timeline({
-            loop: false
-        }).add({
-            targets: this,
-            translateY: [
-                50,
-                0
-            ],
+const titleFadeIn = ()=>{
+    document.querySelectorAll('.h2-display').forEach((el)=>{
+        console.log(`Processing element:`, el);
+        // Break text into spans
+        el.innerHTML = [
+            ...el.textContent
+        ].map((char)=>`<span${char === ' ' ? ' class="space"' : ''} style="opacity: 0;">${char}</span>`).join('');
+        // Create an animation for the spans
+        const animation = (0, _animejsDefault.default)({
+            targets: el.querySelectorAll('span'),
             opacity: [
                 0,
                 1
             ],
-            duration: 500,
-            delay: (el, i)=>100 * i,
-            easing: 'cubicBezier(.71,-0.77,.43,1.67)'
+            filter: [
+                'blur(10px)',
+                'blur(0px)'
+            ],
+            autoplay: false,
+            delay: (0, _animejsDefault.default).stagger(100, {
+                start: 500,
+                from: 'center',
+                duration: 2000
+            }),
+            easing: 'easeOutQuad'
         });
-    }, {
-        offset: '100%'
+        // Track if animation has been played
+        let hasPlayed = false;
+        // Add scroll listener for this element
+        const onScroll = ()=>{
+            const rect = el.getBoundingClientRect();
+            const startTrigger = window.innerHeight * 0.25; // 75% of viewport height
+            const endTrigger = window.innerHeight * 0.85; // 25% of viewport height
+            // Calculate normalized scroll percent (0 to 1)
+            const scrollPercent = Math.min(Math.max((rect.top - endTrigger) / (startTrigger - endTrigger), 0), 1);
+            if (!hasPlayed) {
+                // Update animation progress
+                animation.seek(scrollPercent * animation.duration);
+                // Check if animation has completed
+                if (scrollPercent >= 1) hasPlayed = true;
+            }
+        };
+        window.addEventListener('scroll', onScroll);
+        onScroll(); // Trigger initial check in case the element is already in view
     });
 };
-exports.default = headingFadeIn;
+exports.default = titleFadeIn;
 
 },{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["jQqog","igcvL"], "igcvL", "parcelRequire94c2")
 
