@@ -2946,12 +2946,27 @@ parcelHelpers.defineInteropFlag(exports);
 var _animejs = require("animejs");
 var _animejsDefault = parcelHelpers.interopDefault(_animejs);
 const headingFadeIn = ()=>{
-    const target = document.querySelector('.h2-display');
-    const text = target.textContent;
-    const letters = text.split('').map((letter)=>{
-        return `<span class="letter" style="display: inline-block; opacity: 0; filter: blur(10px);">${letter}</span>`;
-    }).join('');
-    target.innerHTML = letters;
+    console.log("Initializing headingFadeIn...");
+    $("#test").waypoint(function() {
+        (0, _animejsDefault.default).timeline({
+            loop: false
+        }).add({
+            targets: this,
+            translateY: [
+                50,
+                0
+            ],
+            opacity: [
+                0,
+                1
+            ],
+            duration: 500,
+            delay: (el, i)=>100 * i,
+            easing: 'cubicBezier(.71,-0.77,.43,1.67)'
+        });
+    }, {
+        offset: '100%'
+    });
 };
 exports.default = headingFadeIn;
 
