@@ -6,6 +6,7 @@ import btnHover from '/js/btnHover.js';
 import titleFadeIn from '/js/titleFadeIn.js';
 import articleClick from '/js/articleClick.js';
 import gradientHeight from '/js/gradientHeight.js';
+import breakLinesAndFadeIn from '/js/breakLinesAndFadeIn.js';
 
 
 
@@ -18,6 +19,7 @@ const onReady = () => {
     btnHover();
     titleFadeIn();
     articleClick();
+    breakLinesAndFadeIn();
 }
 const onLoading = () => {
     gradientHeight();

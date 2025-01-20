@@ -613,6 +613,8 @@ var _articleClickJs = require("/js/articleClick.js");
 var _articleClickJsDefault = parcelHelpers.interopDefault(_articleClickJs);
 var _gradientHeightJs = require("/js/gradientHeight.js");
 var _gradientHeightJsDefault = parcelHelpers.interopDefault(_gradientHeightJs);
+var _breakLinesAndFadeInJs = require("/js/breakLinesAndFadeIn.js");
+var _breakLinesAndFadeInJsDefault = parcelHelpers.interopDefault(_breakLinesAndFadeInJs);
 const parceled = true;
 const onReady = ()=>{
     (0, _preloaderJsDefault.default)();
@@ -622,6 +624,7 @@ const onReady = ()=>{
     (0, _btnHoverJsDefault.default)();
     (0, _titleFadeInJsDefault.default)();
     (0, _articleClickJsDefault.default)();
+    (0, _breakLinesAndFadeInJsDefault.default)();
 };
 const onLoading = ()=>{
     (0, _gradientHeightJsDefault.default)();
@@ -633,25 +636,29 @@ else {
     document.addEventListener('DOMContentLoaded', onLoading);
 }
 
-},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/titleFadeIn.js":"boZN7","/js/articleClick.js":"bs676","/js/gradientHeight.js":"fQtgt"}],"a7zDw":[function(require,module,exports,__globalThis) {
+},{"/js/contactTabClick.js":"a7zDw","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","/js/formTab.js":"6jC0S","/js/preloader.js":"fr1Gn","/js/smoothScroll.js":"fOdkn","/js/btnHover.js":"hkmen","/js/titleFadeIn.js":"boZN7","/js/articleClick.js":"bs676","/js/gradientHeight.js":"fQtgt","/js/breakLinesAndFadeIn.js":"hyAOp"}],"a7zDw":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 const contactTabClick = ()=>{
-    // Select all tabs
-    const tabs = document.querySelectorAll(".form-tab");
-    // Add "active" class to the first tab on page load
-    if (tabs.length > 0) tabs[0].classList.add("active");
-    // Add event listeners to all tabs
-    tabs.forEach((tab)=>{
-        tab.addEventListener("click", ()=>{
-            // Remove "active" class from all tabs
-            tabs.forEach((otherTab)=>{
-                otherTab.classList.remove("active");
+    // Check if the current breakpoint is desktop
+    const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+    if (isDesktop) {
+        // Select all tabs
+        const tabs = document.querySelectorAll(".form-tab");
+        // Add "active" class to the first tab on page load
+        if (tabs.length > 0) tabs[0].classList.add("active");
+        // Add event listeners to all tabs
+        tabs.forEach((tab)=>{
+            tab.addEventListener("click", ()=>{
+                // Remove "active" class from all tabs
+                tabs.forEach((otherTab)=>{
+                    otherTab.classList.remove("active");
+                });
+                // Add "active" class to the clicked tab
+                tab.classList.add("active");
             });
-            // Add "active" class to the clicked tab
-            tab.classList.add("active");
         });
-    });
+    }
 };
 exports.default = contactTabClick;
 
@@ -3040,6 +3047,51 @@ gradientHeight();
 window.addEventListener('resize', gradientHeight);
 exports.default = gradientHeight;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["jQqog","igcvL"], "igcvL", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hyAOp":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _animejs = require("animejs");
+var _animejsDefault = parcelHelpers.interopDefault(_animejs);
+const breakWordsAndFadeIn = ()=>{
+    document.querySelectorAll('.word-break').forEach((el)=>{
+        console.log(`Processing element:`, el);
+        // Break text into words
+        const words = el.textContent.split(' ').map((word)=>word.trim()).filter((word)=>word !== '');
+        el.innerHTML = words.map((word)=>`<span class="word" style="opacity: 0; display: inline-block;">${word}</span>`).join(' ');
+        // Create an animation for the words
+        const animation = (0, _animejsDefault.default)({
+            targets: el.querySelectorAll('.word'),
+            opacity: [
+                0,
+                1
+            ],
+            autoplay: false,
+            delay: (0, _animejsDefault.default).stagger(100, {
+                start: 500
+            }),
+            easing: 'easeOutQuad'
+        });
+        // Track if animation has been played
+        let hasPlayed = false;
+        // Get the offset percentage from the data attribute or default to 50%
+        const offsetPercentage = parseFloat(el.dataset.offset) || 50;
+        const offsetTrigger = window.innerHeight * (offsetPercentage / 100);
+        // Add scroll listener for this element
+        const onScroll = ()=>{
+            const rect = el.getBoundingClientRect();
+            // Check if the element's top is within the trigger range
+            if (rect.top <= offsetTrigger && rect.bottom >= 0 && !hasPlayed) {
+                animation.play();
+                hasPlayed = true;
+                window.removeEventListener('scroll', onScroll); // Remove listener after animation starts
+            }
+        };
+        window.addEventListener('scroll', onScroll);
+        onScroll(); // Trigger initial check in case the element is already in view
+    });
+};
+exports.default = breakWordsAndFadeIn;
+
+},{"animejs":"jokr5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["jQqog","igcvL"], "igcvL", "parcelRequire94c2")
 
 //# sourceMappingURL=app.js.map
